@@ -408,7 +408,7 @@ ul, ol {
   background: var(--yellow-50);
   border-bottom: 8px solid var(--yellow-100);
   border-radius: 4px;
-  padding: 16px 177px 24px;
+  padding: 16px 116px 24px;
 }
 
 .decision-banner__title {
@@ -441,7 +441,7 @@ ul, ol {
   background: var(--petroleum-100);
   border-bottom: 8px solid var(--petroleum-200);
   border-radius: 4px;
-  padding: 60px 177px;
+  padding: 60px 116px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -530,10 +530,10 @@ ul, ol {
 
 .body-section {
   max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 48px 116px;
+  margin: 0 max(40px, calc((100% - var(--container-max)) / 2));
+  padding: 48px 116px 0;
   display: grid;
-  grid-template-columns: 700px 1fr;
+  grid-template-columns: 1fr auto;
   gap: 60px;
 }
 
@@ -566,6 +566,12 @@ ul, ol {
 }
 
 /* Materials */
+.materials-section {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 32px calc(116px + 400px) 48px 116px;
+}
+
 .materials__heading {
   font-size: var(--fs-teaser);
   font-weight: var(--fw-bold);
@@ -638,6 +644,7 @@ ul, ol {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 340px;
   align-self: start;
 }
 
@@ -891,18 +898,6 @@ ul, ol {
 
 .horingssvar-pagination__show-all:hover {
   color: var(--petroleum-800);
-}
-
-/* ==========================================================================
-   Materials Section (standalone)
-   ========================================================================== */
-
-.materials-section {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 116px 48px;
-  max-width: 700px;
-  margin-left: 116px;
 }
 
 /* ==========================================================================
@@ -1969,7 +1964,11 @@ ul, ol {
   }
 
   .body-section {
-    padding: 48px 40px;
+    padding: 48px 40px 0;
+  }
+
+  .materials-section {
+    padding: 32px calc(40px + 400px) 48px 40px;
   }
 
   .horingssvar-section {
@@ -2013,7 +2012,16 @@ ul, ol {
 
   .body-section {
     grid-template-columns: 1fr;
-    padding: 32px 24px;
+    margin: 0 auto;
+    padding: 32px 40px 0;
+  }
+
+  .materials-section {
+    padding: 24px 40px 32px;
+  }
+
+  .contact-card {
+    width: 100%;
   }
 
   .hearing-header__content {
@@ -2088,8 +2096,16 @@ ul, ol {
     margin-inline: 16px;
   }
 
+  .body-section {
+    padding: 32px 16px 0;
+  }
+
   .horingssvar-section {
     padding: 0 16px 48px;
+  }
+
+  .materials-section {
+    padding: 24px 16px 32px;
   }
 
   .horingssvar-section__controls {
