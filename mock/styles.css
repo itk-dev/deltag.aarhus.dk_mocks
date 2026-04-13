@@ -318,7 +318,7 @@ ul, ol {
 }
 
 .nav--compact .nav__link--active::after {
-  bottom: -14px;
+  bottom: -19px;
 }
 
 .nav__sub-link {
