@@ -935,10 +935,30 @@ function initGlossary() {
   });
 }
 
+/* ==========================================================================
+   Compact Nav on Scroll
+   ========================================================================== */
+
+function initCompactNav() {
+  const nav = document.querySelector(".nav");
+  const compactAt = 80;
+  const expandAt = 30;
+
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    if (!nav.classList.contains("nav--compact") && y > compactAt) {
+      nav.classList.add("nav--compact");
+    } else if (nav.classList.contains("nav--compact") && y < expandAt) {
+      nav.classList.remove("nav--compact");
+    }
+  }, { passive: true });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   init();
   initMap();
   initMaterialModal();
   initDecisionModal();
   initGlossary();
+  initCompactNav();
 });

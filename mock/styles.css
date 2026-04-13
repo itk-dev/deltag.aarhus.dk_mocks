@@ -221,6 +221,7 @@ ul, ol {
   padding: 18px 36px 24px;
   display: flex;
   justify-content: center;
+  transition: padding 0.3s ease;
 }
 
 .nav__inner {
@@ -238,6 +239,10 @@ ul, ol {
   align-self: center;
 }
 
+.nav__logo img {
+  transition: height 0.3s ease;
+}
+
 .nav__logo svg {
   height: 40px;
   width: auto;
@@ -249,11 +254,43 @@ ul, ol {
   flex-direction: column;
   align-items: flex-end;
   gap: 18px;
+  transition: gap 0.3s ease;
 }
 
 .nav__sub-menu {
   display: flex;
   gap: 24px;
+  overflow: hidden;
+  max-height: 24px;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease;
+}
+
+/* Compact nav on scroll */
+.nav--compact {
+  padding: 8px 36px 12px;
+}
+
+.nav--compact .nav__logo img {
+  height: 40px;
+}
+
+.nav--compact .nav__inner {
+  align-items: center;
+}
+
+.nav--compact .nav__right {
+  gap: 0;
+}
+
+.nav--compact .nav__sub-menu {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+.nav--compact .nav__link--active::after {
+  bottom: -14px;
 }
 
 .nav__sub-link {
@@ -337,7 +374,7 @@ ul, ol {
 
 .decision-banner {
   max-width: var(--container-max);
-  margin: -60px auto 0;
+  margin: -60px max(40px, calc((100% - var(--container-max)) / 2)) 0;
   position: relative;
   z-index: 1;
   background: var(--yellow-50);
@@ -370,7 +407,7 @@ ul, ol {
 
 .hearing-header {
   max-width: var(--container-max);
-  margin: 24px auto 0;
+  margin: 24px max(40px, calc((100% - var(--container-max)) / 2)) 0;
   position: relative;
   z-index: 1;
   background: var(--petroleum-100);
@@ -1919,12 +1956,25 @@ ul, ol {
     padding: 16px 60px 24px;
   }
 
+  .statistics-section {
+    padding-inline: 40px;
+  }
+
+  .map-box-section {
+    padding-inline: 40px;
+  }
+
   .info-box {
     margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .related-section {
+    padding-inline: 40px;
   }
 
   .statistics {
-    margin-left: 40px;
+    margin-left: 0;
   }
 }
 
