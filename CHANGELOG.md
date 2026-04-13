@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Refactored monolithic CSS (2,165 lines) into 21 component files in mock/css/
+- Refactored monolithic JS (965 lines) into 12 module files in mock/js/
+- Reusable design tokens file (css/tokens.css) with 93 custom properties
+- Shared modal controller (js/modal.js) with createModalController pattern
+- Centralized state management via window.DeltagMock.state namespace
+- ITK Dev style code comments explaining non-obvious values and patterns
 - Expanded mock comment data to 15 comments per høringssvar item
 - "Vis flere kommentarer" pagination button in modal (loads 5 at a time)
 - Scrollable modal body with sticky prev/next navigation bar

@@ -1,8 +1,11 @@
+window.DeltagMock = window.DeltagMock || {};
+var DM = window.DeltagMock;
+
 /* ==========================================================================
    Mock Data
    ========================================================================== */
 
-const horingssvarData = [
+DM.horingssvarData = [
   {
     id: 1,
     title: "Bekymring om trafikstøj fra nye boliger",
@@ -334,10 +337,10 @@ const horingssvarData = [
    Mock Data Generator
    ========================================================================== */
 
-function generateMockData(baseData, totalCount) {
+DM.generateMockData = function(baseData, totalCount) {
   if (baseData.length >= totalCount) return baseData;
 
-  const titles = [
+  var titles = [
     "Bekymring om støjniveauet", "Ønske om flere grønne arealer", "Bedre cykelinfrastruktur",
     "Bevar det åbne landskab", "Skolekapacitet skal udvides", "Højere krav til energieffektivitet",
     "Trafiksikkerhed for børn", "Regnvandshåndtering mangler", "Bevar de gamle træer",
@@ -354,7 +357,7 @@ function generateMockData(baseData, totalCount) {
     "Bedre belysning i området"
   ];
 
-  const descriptions = [
+  var descriptions = [
     "Vi er bekymrede over de konsekvenser, det nye byggeri vil have for vores nærområde. Der bør tages flere hensyn til de eksisterende beboere.",
     "Det er positivt med udvikling, men det skal ske på en bæredygtig og gennemtænkt måde, der respekterer områdets karakter.",
     "Kommunen bør sikre, at infrastrukturen kan følge med den øgede belastning fra nye beboere i området.",
@@ -367,7 +370,7 @@ function generateMockData(baseData, totalCount) {
     "Vi ser frem til nye naboer, men beder om at processen foregår med respekt for de nuværende beboeres livskvalitet."
   ];
 
-  const authors = [
+  var authors = [
     "Maria Jensen", "Thomas Pedersen", "Birgit Rasmussen", "Henrik Christensen",
     "Camilla Thomsen", "Lars Winding", "Rasmus Bloch", "Niels Eriksen",
     "Susanne Krog", "Erik Bak", "Vibeke Frost", "Jørgen Dam",
@@ -382,9 +385,9 @@ function generateMockData(baseData, totalCount) {
     "Anders Berg", "Sofie Gram", "Camilla Frost", "Henrik Berg"
   ];
 
-  const categories = ["trafik", "miljoe", "bolig", "andet"];
+  var categories = ["trafik", "miljoe", "bolig", "andet"];
 
-  const commentTexts = [
+  var commentTexts = [
     "Helt enig i denne betragtning.", "Det bør undersøges nærmere af kommunen.",
     "Vi har lignende erfaringer i vores kvarter.", "Godt formuleret. Håber politikerne lytter.",
     "Der er brug for handling, ikke bare ord.", "Kan kun støtte dette synspunkt.",
@@ -395,47 +398,50 @@ function generateMockData(baseData, totalCount) {
     "Tak for at bringe dette op. Mange tænker det samme."
   ];
 
-  const months = ["januar", "februar", "marts", "april", "maj", "juni",
+  var months = ["januar", "februar", "marts", "april", "maj", "juni",
     "juli", "august", "september", "oktober", "november", "december"];
 
+  /* Seeded PRNG for reproducible mock data — same seed always produces the same items */
   function seededRandom(seed) {
-    let x = Math.sin(seed) * 10000;
+    var x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
   }
 
-  const result = [...baseData];
+  var result = baseData.slice();
 
-  for (let i = baseData.length + 1; i <= totalCount; i++) {
-    const r = (n) => seededRandom(i * 997 + n);
-    const pick = (arr, n) => arr[Math.floor(r(n) * arr.length)];
+  for (var i = baseData.length + 1; i <= totalCount; i++) {
+    var r = function(n) { return seededRandom(i * 997 + n); };
+    var pick = function(arr, n) { return arr[Math.floor(r(n) * arr.length)]; };
 
-    const titleBase = pick(titles, 1);
-    const month = Math.floor(r(2) * 12);
-    const day = 1 + Math.floor(r(3) * 28);
-    const year = r(4) > 0.3 ? 2025 : 2024;
-    const commentCount = Math.floor(r(5) * 30);
-    const likeCount = Math.floor(r(6) * 80);
+    var titleBase = pick(titles, 1);
+    var month = Math.floor(r(2) * 12);
+    var day = 1 + Math.floor(r(3) * 28);
+    /* 70% chance of 2025, 30% chance of 2024 */
+    var year = r(4) > 0.3 ? 2025 : 2024;
+    var commentCount = Math.floor(r(5) * 30);
+    var likeCount = Math.floor(r(6) * 80);
 
-    const numComments = 1 + Math.floor(r(7) * 5);
-    const commentsList = [];
-    for (let c = 0; c < numComments; c++) {
-      const cDay = 1 + Math.floor(seededRandom(i * 113 + c * 7) * 28);
-      const cMonth = month < 11 ? month + 1 : 0;
-      const shortMonth = months[cMonth].substring(0, 3);
+    var numComments = 1 + Math.floor(r(7) * 5);
+    var commentsList = [];
+    for (var c = 0; c < numComments; c++) {
+      var cDay = 1 + Math.floor(seededRandom(i * 113 + c * 7) * 28);
+      /* Comments appear the month after the hearing response */
+      var cMonth = month < 11 ? month + 1 : 0;
+      var shortMonth = months[cMonth].substring(0, 3);
       commentsList.push({
         author: pick(authors, 10 + c),
-        date: `${cDay}. ${shortMonth} ${year}`,
+        date: cDay + ". " + shortMonth + " " + year,
         text: pick(commentTexts, 20 + c)
       });
     }
 
     result.push({
       id: i,
-      title: `${titleBase} (#${i})`,
+      title: titleBase + " (#" + i + ")",
       description: pick(descriptions, 8),
       fullDescription: pick(descriptions, 8) + "\n\n" + pick(descriptions, 9),
       author: pick(authors, 11),
-      date: `${day}. ${months[month]} ${year}`,
+      date: day + ". " + months[month] + " " + year,
       comments: commentCount,
       likes: likeCount,
       category: pick(categories, 12),
@@ -444,521 +450,10 @@ function generateMockData(baseData, totalCount) {
   }
 
   return result;
-}
-
-horingssvarData.push(...generateMockData(horingssvarData, 525).slice(horingssvarData.length));
-
-/* ==========================================================================
-   State
-   ========================================================================== */
-
-let currentSort = "comments";
-let currentCategory = "all";
-let visibleCount = 16;
-let currentModalIndex = -1;
-let filteredData = [...horingssvarData];
-const ITEMS_PER_PAGE = 16;
-const COMMENTS_PER_PAGE = 5;
-let commentsVisible = COMMENTS_PER_PAGE;
-
-/* ==========================================================================
-   Rendering
-   ========================================================================== */
-
-function sortData(data, sortBy) {
-  const sorted = [...data];
-  switch (sortBy) {
-    case "likes":
-      sorted.sort((a, b) => b.likes - a.likes);
-      break;
-    case "newest":
-      sorted.sort((a, b) => b.id - a.id);
-      break;
-    case "oldest":
-      sorted.sort((a, b) => a.id - b.id);
-      break;
-    case "comments":
-      sorted.sort((a, b) => b.comments - a.comments);
-      break;
-  }
-  return sorted;
-}
-
-function filterData(data, category) {
-  if (category === "all") return data;
-  return data.filter((item) => item.category === category);
-}
-
-function formatNumber(num) {
-  return num.toLocaleString("da-DK");
-}
-
-function createCard(item, index) {
-  const card = document.createElement("article");
-  card.className = "horingssvar-card";
-  card.setAttribute("role", "button");
-  card.setAttribute("tabindex", "0");
-  card.setAttribute("aria-label", `Åbn høringssvar: ${item.title}`);
-  card.dataset.index = index;
-
-  card.innerHTML = `
-    <h3 class="horingssvar-card__title">${item.title}</h3>
-    <p class="horingssvar-card__description">${item.description}</p>
-    <div class="horingssvar-card__meta">
-      <span class="horingssvar-card__meta-item">
-        <i class="fa-regular fa-comment" aria-hidden="true"></i>
-        ${formatNumber(item.comments)} kommentarer
-      </span>
-      <span class="horingssvar-card__meta-item">
-        <i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>
-        ${formatNumber(item.likes)} synes om
-      </span>
-    </div>
-  `;
-
-  card.addEventListener("click", () => openModal(index));
-  card.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openModal(index);
-    }
-  });
-
-  return card;
-}
-
-function renderGrid() {
-  const grid = document.getElementById("horingssvar-grid");
-  const countEl = document.getElementById("horingssvar-count");
-  const paginationCount = document.getElementById("pagination-count");
-  const showMoreBtn = document.getElementById("show-all-btn");
-
-  filteredData = sortData(filterData(horingssvarData, currentCategory), currentSort);
-
-  grid.innerHTML = "";
-  const shown = Math.min(visibleCount, filteredData.length);
-  const displayData = filteredData.slice(0, shown);
-
-  displayData.forEach((item, index) => {
-    grid.appendChild(createCard(item, index));
-  });
-
-  countEl.textContent = filteredData.length;
-  paginationCount.textContent = `Viser 1 - ${shown} af ${filteredData.length}`;
-
-  if (shown >= filteredData.length) {
-    showMoreBtn.style.display = "none";
-  } else {
-    showMoreBtn.textContent = "Vis flere";
-    showMoreBtn.style.display = "";
-  }
-}
-
-/* ==========================================================================
-   Modal
-   ========================================================================== */
-
-const overlay = document.getElementById("modal-overlay");
-let previousFocus = null;
-
-function openModal(index) {
-  currentModalIndex = index;
-  commentsVisible = COMMENTS_PER_PAGE;
-  previousFocus = document.activeElement;
-  updateModalContent();
-  overlay.hidden = false;
-  overlay.classList.add("modal-overlay--open");
-  document.body.classList.add("modal-open");
-
-  // Update URL hash
-  window.history.replaceState(null, "", `#svar-${filteredData[index].id}`);
-
-  // Focus the close button
-  overlay.querySelector(".modal__close").focus();
-}
-
-function closeModal() {
-  overlay.hidden = true;
-  overlay.classList.remove("modal-overlay--open");
-  document.body.classList.remove("modal-open");
-  currentModalIndex = -1;
-  window.history.replaceState(null, "", window.location.pathname);
-
-  if (previousFocus) {
-    previousFocus.focus();
-  }
-}
-
-function updateModalContent() {
-  const item = filteredData[currentModalIndex];
-  if (!item) return;
-
-  document.getElementById("modal-title").textContent = item.title;
-  document.getElementById("modal-author").textContent = item.author;
-  document.getElementById("modal-date").textContent = item.date;
-  document.getElementById("modal-comments-count").textContent = `${formatNumber(item.comments)} kommentarer`;
-  document.getElementById("modal-likes-count").textContent = `${formatNumber(item.likes)} synes om`;
-
-  const descEl = document.getElementById("modal-description");
-  descEl.innerHTML = item.fullDescription
-    .split("\n\n")
-    .map((p) => `<p>${p}</p>`)
-    .join("");
-
-  // Comments
-  const commentsSection = document.getElementById("modal-comments");
-  const commentsTitle = commentsSection.querySelector(".modal__comments-title");
-  commentsSection.innerHTML = "";
-  commentsSection.appendChild(commentsTitle);
-
-  if (item.commentsList && item.commentsList.length > 0) {
-    const visibleComments = item.commentsList.slice(0, commentsVisible);
-    visibleComments.forEach((comment) => {
-      const commentEl = document.createElement("div");
-      commentEl.className = "modal__comment";
-      commentEl.innerHTML = `
-        <span class="modal__comment-author">${comment.author}</span>
-        <span class="modal__comment-date">${comment.date}</span>
-        <p class="modal__comment-text">${comment.text}</p>
-      `;
-      commentsSection.appendChild(commentEl);
-    });
-
-    const remaining = item.commentsList.length - commentsVisible;
-    if (remaining > 0) {
-      const showMoreBtn = document.createElement("button");
-      showMoreBtn.className = "modal__comments-show-more";
-      showMoreBtn.textContent = `Vis flere kommentarer (${remaining} mere)`;
-      showMoreBtn.addEventListener("click", () => {
-        commentsVisible += COMMENTS_PER_PAGE;
-        updateModalContent();
-      });
-      commentsSection.appendChild(showMoreBtn);
-    }
-  }
-
-  // Navigation
-  const prevBtn = document.getElementById("modal-prev");
-  const nextBtn = document.getElementById("modal-next");
-  const counter = document.getElementById("modal-counter");
-
-  prevBtn.disabled = currentModalIndex === 0;
-  nextBtn.disabled = currentModalIndex === filteredData.length - 1;
-  counter.textContent = `${currentModalIndex + 1} af ${filteredData.length}`;
-}
-
-function navigateModal(direction) {
-  const newIndex = currentModalIndex + direction;
-  if (newIndex < 0 || newIndex >= filteredData.length) return;
-  currentModalIndex = newIndex;
-  commentsVisible = COMMENTS_PER_PAGE;
-  updateModalContent();
-  window.history.replaceState(null, "", `#svar-${filteredData[currentModalIndex].id}`);
-}
-
-/* ==========================================================================
-   Dropdowns
-   ========================================================================== */
-
-function initDropdowns() {
-  document.querySelectorAll(".dropdown").forEach((dropdown) => {
-    const button = dropdown.querySelector(".dropdown__button");
-    const menu = dropdown.querySelector(".dropdown__menu");
-    const items = dropdown.querySelectorAll(".dropdown__item");
-    const buttonText = dropdown.querySelector(".dropdown__button-text");
-
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      // Close other dropdowns
-      document.querySelectorAll(".dropdown__menu--open").forEach((m) => {
-        if (m !== menu) m.classList.remove("dropdown__menu--open");
-      });
-      document.querySelectorAll('.dropdown__button[aria-expanded="true"]').forEach((b) => {
-        if (b !== button) b.setAttribute("aria-expanded", "false");
-      });
-
-      const isOpen = menu.classList.toggle("dropdown__menu--open");
-      button.setAttribute("aria-expanded", isOpen);
-    });
-
-    items.forEach((item) => {
-      item.addEventListener("click", () => {
-        const value = item.dataset.value;
-        buttonText.textContent = item.textContent;
-
-        items.forEach((i) => {
-          i.classList.remove("dropdown__item--active");
-          i.setAttribute("aria-selected", "false");
-        });
-        item.classList.add("dropdown__item--active");
-        item.setAttribute("aria-selected", "true");
-
-        menu.classList.remove("dropdown__menu--open");
-        button.setAttribute("aria-expanded", "false");
-
-        if (dropdown.dataset.dropdown === "sort") {
-          currentSort = value;
-        } else if (dropdown.dataset.dropdown === "category") {
-          currentCategory = value;
-        }
-
-        visibleCount = ITEMS_PER_PAGE;
-        renderGrid();
-      });
-    });
-  });
-}
-
-/* ==========================================================================
-   Event Listeners
-   ========================================================================== */
-
-function init() {
-  renderGrid();
-  initDropdowns();
-
-  // Show More
-  document.getElementById("show-all-btn").addEventListener("click", () => {
-    visibleCount += ITEMS_PER_PAGE;
-    renderGrid();
-  });
-
-  // Modal close
-  overlay.querySelector(".modal__close").addEventListener("click", closeModal);
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeModal();
-  });
-
-  // Modal navigation
-  document.getElementById("modal-prev").addEventListener("click", () => navigateModal(-1));
-  document.getElementById("modal-next").addEventListener("click", () => navigateModal(1));
-
-  // Keyboard
-  document.addEventListener("keydown", (e) => {
-    if (currentModalIndex === -1) return;
-
-    switch (e.key) {
-      case "Escape":
-        closeModal();
-        break;
-      case "ArrowLeft":
-        navigateModal(-1);
-        break;
-      case "ArrowRight":
-        navigateModal(1);
-        break;
-    }
-  });
-
-  // Focus trap in modal
-  overlay.addEventListener("keydown", (e) => {
-    if (e.key !== "Tab") return;
-
-    const focusable = overlay.querySelectorAll(
-      'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
-    );
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey) {
-      if (document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      }
-    } else {
-      if (document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  // Close dropdowns on outside click
-  document.addEventListener("click", () => {
-    document.querySelectorAll(".dropdown__menu--open").forEach((m) => {
-      m.classList.remove("dropdown__menu--open");
-    });
-    document.querySelectorAll('.dropdown__button[aria-expanded="true"]').forEach((b) => {
-      b.setAttribute("aria-expanded", "false");
-    });
-  });
-
-  // Deep-link: open modal from URL hash
-  const hash = window.location.hash;
-  if (hash.startsWith("#svar-")) {
-    const id = parseInt(hash.replace("#svar-", ""), 10);
-    const index = filteredData.findIndex((item) => item.id === id);
-    if (index !== -1) {
-      openModal(index);
-    }
-  }
-}
-
-/* ==========================================================================
-   Map
-   ========================================================================== */
-
-function initMap() {
-  var map = L.map("map", { scrollWheelZoom: false }).setView([56.13, 10.19], 13);
-
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    subdomains: "abcd",
-    maxZoom: 20,
-  }).addTo(map);
-
-  // Mock hearing response locations around Malling/Synnedrupvej area
-  var responseLocations = [
-    { lat: 56.132, lng: 10.185, count: 12, label: "Synnedrupvej" },
-    { lat: 56.128, lng: 10.192, count: 8, label: "Malling Byvej" },
-    { lat: 56.135, lng: 10.178, count: 15, label: "Bredgade" },
-    { lat: 56.130, lng: 10.200, count: 6, label: "Malling Skole" },
-    { lat: 56.125, lng: 10.188, count: 10, label: "Syd for byen" },
-    { lat: 56.138, lng: 10.195, count: 4, label: "Nord for byen" },
-    { lat: 56.133, lng: 10.172, count: 18, label: "Industrivej" },
-    { lat: 56.127, lng: 10.210, count: 3, label: "Ajstrup Strandvej" },
-    { lat: 56.140, lng: 10.183, count: 7, label: "Obstrupvej" },
-    { lat: 56.122, lng: 10.195, count: 5, label: "Beder" },
-    { lat: 56.136, lng: 10.205, count: 2, label: "Øst" },
-  ];
-
-  var maxCount = Math.max.apply(null, responseLocations.map(function(l) { return l.count; }));
-
-  responseLocations.forEach(function(loc) {
-    var ratio = loc.count / maxCount;
-    var radius = 20 + ratio * 60;
-    var opacity = 0.25 + ratio * 0.4;
-
-    L.circleMarker([loc.lat, loc.lng], {
-      radius: radius,
-      fillColor: "#3661d8",
-      color: "#3661d8",
-      weight: 1,
-      fillOpacity: opacity,
-      opacity: 0.6,
-    })
-      .addTo(map)
-      .bindPopup(
-        "<strong>" + loc.label + "</strong><br>" + loc.count + " høringssvar"
-      );
-  });
-}
-
-/* ==========================================================================
-   Material Document Modal
-   ========================================================================== */
-
-function initMaterialModal() {
-  const materialOverlay = document.getElementById("material-modal-overlay");
-  const closeBtn = document.getElementById("material-modal-close");
-  const trigger = document.getElementById("material-lokalplan");
-
-  trigger.addEventListener("click", (e) => {
-    e.preventDefault();
-    materialOverlay.hidden = false;
-    materialOverlay.classList.add("modal-overlay--open");
-    document.body.classList.add("modal-open");
-    closeBtn.focus();
-  });
-
-  function closeMaterialModal() {
-    materialOverlay.hidden = true;
-    materialOverlay.classList.remove("modal-overlay--open");
-    document.body.classList.remove("modal-open");
-  }
-
-  closeBtn.addEventListener("click", closeMaterialModal);
-
-  materialOverlay.addEventListener("click", (e) => {
-    if (e.target === materialOverlay) closeMaterialModal();
-  });
-}
-
-/* ==========================================================================
-   Decision Modal
-   ========================================================================== */
-
-function initDecisionModal() {
-  const decisionOverlay = document.getElementById("decision-modal-overlay");
-  const openBtn = document.getElementById("open-decision-modal");
-  const closeBtn = document.getElementById("decision-modal-close");
-
-  openBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    decisionOverlay.hidden = false;
-    decisionOverlay.classList.add("modal-overlay--open");
-    document.body.classList.add("modal-open");
-    closeBtn.focus();
-  });
-
-  function closeDecisionModal() {
-    decisionOverlay.hidden = true;
-    decisionOverlay.classList.remove("modal-overlay--open");
-    document.body.classList.remove("modal-open");
-  }
-
-  closeBtn.addEventListener("click", closeDecisionModal);
-
-  decisionOverlay.addEventListener("click", (e) => {
-    if (e.target === decisionOverlay) closeDecisionModal();
-  });
-}
-
-/* ==========================================================================
-   Glossary Tooltips
-   ========================================================================== */
-
-function initGlossary() {
-  document.querySelectorAll(".glossary-term__icon").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const term = btn.closest(".glossary-term");
-      const wasOpen = term.classList.contains("glossary-term--open");
-
-      // Close all open tooltips
-      document.querySelectorAll(".glossary-term--open").forEach((t) => {
-        t.classList.remove("glossary-term--open");
-      });
-
-      if (!wasOpen) {
-        term.classList.add("glossary-term--open");
-      }
-    });
-  });
-
-  // Close tooltips on outside click
-  document.addEventListener("click", () => {
-    document.querySelectorAll(".glossary-term--open").forEach((t) => {
-      t.classList.remove("glossary-term--open");
-    });
-  });
-}
-
-/* ==========================================================================
-   Compact Nav on Scroll
-   ========================================================================== */
-
-function initCompactNav() {
-  const nav = document.querySelector(".nav");
-  const compactAt = 80;
-  const expandAt = 30;
-
-  window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    if (!nav.classList.contains("nav--compact") && y > compactAt) {
-      nav.classList.add("nav--compact");
-    } else if (nav.classList.contains("nav--compact") && y < expandAt) {
-      nav.classList.remove("nav--compact");
-    }
-  }, { passive: true });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  init();
-  initMap();
-  initMaterialModal();
-  initDecisionModal();
-  initGlossary();
-  initCompactNav();
-});
+};
+
+// Generate and append mock data
+DM.horingssvarData.push.apply(
+  DM.horingssvarData,
+  DM.generateMockData(DM.horingssvarData, 525).slice(DM.horingssvarData.length)
+);

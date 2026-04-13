@@ -1,0 +1,79 @@
+/* Modal Horingssvar — hearing response modal with stats, comments section, and show-more button */
+
+.modal__stats {
+  display: flex;
+  gap: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-small);
+  color: var(--text-primary);
+}
+
+.modal__stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal__stat i {
+  color: var(--gray-600);
+}
+
+.modal__comments-section {
+  border-top: 1px solid var(--gray-200);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal__comments-title {
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+}
+
+.modal__comment {
+  padding: 16px;
+  background: var(--gray-100);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal__comment-author {
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+}
+
+.modal__comment-date {
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-xs);
+  color: var(--gray-650);
+}
+
+.modal__comment-text {
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-small);
+  line-height: 20px;
+}
+
+.modal__comments-show-more {
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--petroleum);
+  background: none;
+  border: 1px solid var(--petroleum);
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  align-self: center;
+}
+
+.modal__comments-show-more:hover {
+  background: var(--petroleum);
+  color: var(--white);
+}
