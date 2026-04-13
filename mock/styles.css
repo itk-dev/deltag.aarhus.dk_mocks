@@ -212,9 +212,37 @@ ul, ol {
    Navigation
    ========================================================================== */
 
-.nav {
+/* ==========================================================================
+   Mock Banner
+   ========================================================================== */
+
+.mock-banner {
   position: sticky;
   top: 0;
+  z-index: 200;
+  background: #d32f2f;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: 6px 16px;
+  letter-spacing: 0.5px;
+}
+
+.mock-banner__link {
+  color: #fff;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.mock-banner__link:hover {
+  color: #ffcdd2;
+}
+
+.nav {
+  position: sticky;
+  top: 28px;
   z-index: 100;
   background: var(--white);
   box-shadow: var(--shadow-nav);
