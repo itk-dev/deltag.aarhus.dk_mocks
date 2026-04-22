@@ -86,6 +86,17 @@
   margin-top: 2px;
 }
 
+/* Project link in sidebar */
+.hearing-header__meta-link {
+  color: var(--petroleum);
+  text-decoration: underline;
+  font-weight: var(--fw-semibold);
+}
+
+.hearing-header__meta-link:hover {
+  color: var(--petroleum-800);
+}
+
 .hearing-header__tags {
   font-family: var(--font-family-inter);
   font-size: var(--fs-base);

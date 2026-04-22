@@ -189,6 +189,30 @@
   color: var(--gray-600);
 }
 
+/* Like button (open variant) */
+.horingssvar-card__like-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family-inter);
+  font-size: var(--fs-small);
+  line-height: 20px;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.horingssvar-card__like-btn:hover {
+  color: var(--petroleum);
+}
+
+.horingssvar-card__like-btn--liked {
+  color: var(--petroleum);
+  cursor: default;
+}
+
 .horingssvar-card__divider {
   height: 1px;
   background: var(--gray-200);
