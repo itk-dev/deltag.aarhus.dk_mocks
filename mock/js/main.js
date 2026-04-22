@@ -77,4 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
   DM.initDecisionModal();
   DM.initGlossary();
   DM.initCompactNav();
+  DM.initVariant();
+  DM.initMitIDModal();
+  DM.initSubmissionModal();
 });

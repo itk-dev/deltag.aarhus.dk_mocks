@@ -14,7 +14,36 @@ DM.updateModalContent = function() {
   document.getElementById("modal-author").textContent = item.author;
   document.getElementById("modal-date").textContent = item.date;
   document.getElementById("modal-comments-count").textContent = DM.formatNumber(item.comments) + " kommentarer";
-  document.getElementById("modal-likes-count").textContent = DM.formatNumber(item.likes) + " synes om";
+
+  var likesEl = document.getElementById("modal-likes-count");
+  likesEl.textContent = DM.formatNumber(item.likes) + " synes om";
+
+  /* Make the likes stat clickable in the open variant */
+  var likeStat = likesEl.parentElement;
+  if (state.variant === "open") {
+    likeStat.classList.add("modal__stat--interactive");
+    likeStat.setAttribute("role", "button");
+    likeStat.setAttribute("tabindex", "0");
+    likeStat.style.cursor = "pointer";
+
+    var likeHandler = function(e) {
+      e.preventDefault();
+      item.likes++;
+      likesEl.textContent = DM.formatNumber(item.likes) + " synes om";
+      likeStat.classList.add("modal__stat--liked");
+      likeStat.removeEventListener("click", likeHandler);
+      likeStat.removeEventListener("keydown", likeKeyHandler);
+      likeStat.style.cursor = "default";
+      likeStat.removeAttribute("role");
+      likeStat.removeAttribute("tabindex");
+    };
+    var likeKeyHandler = function(e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); likeHandler(e); }
+    };
+
+    likeStat.addEventListener("click", likeHandler);
+    likeStat.addEventListener("keydown", likeKeyHandler);
+  }
 
   var descEl = document.getElementById("modal-description");
   descEl.innerHTML = item.fullDescription
@@ -52,6 +81,33 @@ DM.updateModalContent = function() {
       });
       commentsSection.appendChild(showMoreBtn);
     }
+  }
+
+  /* Comment form — only shown in the open variant */
+  if (state.variant === "open") {
+    var commentForm = document.createElement("form");
+    commentForm.className = "modal__comment-form";
+    commentForm.innerHTML =
+      '<label for="modal-comment-input" class="modal__comment-form-label">Skriv en kommentar</label>' +
+      '<textarea id="modal-comment-input" class="modal__comment-input" placeholder="Skriv en kommentar..." required></textarea>' +
+      '<button type="submit" class="btn-primary modal__comment-submit">Tilføj kommentar</button>';
+    commentsSection.appendChild(commentForm);
+
+    commentForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      var textarea = commentForm.querySelector("textarea");
+      var text = textarea.value.trim();
+      if (!text) return;
+
+      item.commentsList.push({
+        author: "Maria Jensen (dig)",
+        date: "I dag",
+        text: text
+      });
+      item.comments++;
+      textarea.value = "";
+      DM.updateModalContent();
+    });
   }
 
   // Navigation

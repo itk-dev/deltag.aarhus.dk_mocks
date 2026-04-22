@@ -8,6 +8,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Variant switching system: toggle between "Åben" (open) and "Afsluttet" (closed) via mock-banner links or `?variant=open` query parameter
+- "Afsluttet"/"Åben" status badge in hearing header sidebar
+- "Projekt: Grøn energi i Aarhus" linked field in hearing header sidebar
+- Glossary tooltip on "Høringen" explaining what a public hearing is
+- Muted "Skriv et høringssvar" button with tooltip in closed variant (deadline passed)
+- MitID login modal (mock) for open variant — emulates identity verification flow
+- Høringssvar submission form modal with category, title, and body fields
+- Comment form on individual høringssvar (open variant only) for adding replies
+- New CSS files: variant.css, modal-mitid.css, modal-submission.css
+- New JS modules: variant.js, modal-mitid.js, modal-submission.js
+
+### Changed
+
+- Replaced all content with Vosnæs wind turbines hearing (Lokalplan nr. 1237 med miljøvurderingsrapport)
+- Updated 16 hand-written høringssvar to wind turbine topics (noise, landscape, wildlife, property values, etc.)
+- Updated mock data generator with wind turbine-related titles, descriptions, and categories
+- Changed categories from Trafik/Bolig/Miljø/Andet to Miljø/Natur, Støj/Sundhed, Landskab/Visuel, Proces/Andet
+- Increased total høringssvar from 525 to 784
+- Removed (#N) suffixes from generated høringssvar titles
+- Updated map coordinates to Vosnæs/northeast Aarhus area
+- Updated statistics with weekly data across 10-week hearing period (5 Jun – 14 Aug 2025)
+- Updated materials to wind turbine hearing documents
+- Updated decision modal, material modal, related activities, contact card, info box
+
+### Previous Added
+
 - Refactored monolithic CSS (2,165 lines) into 21 component files in mock/css/
 - Refactored monolithic JS (965 lines) into 12 module files in mock/js/
 - Reusable design tokens file (css/tokens.css) with 93 custom properties

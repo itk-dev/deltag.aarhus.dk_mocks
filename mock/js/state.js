@@ -2,6 +2,7 @@
 window.DeltagMock = window.DeltagMock || {};
 
 window.DeltagMock.state = {
+  variant: new URLSearchParams(window.location.search).get("variant") === "closed" ? "closed" : "open",
   currentSort: "comments",
   currentCategory: "all",
   visibleCount: 16,

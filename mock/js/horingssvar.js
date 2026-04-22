@@ -41,6 +41,10 @@ function createCard(item, index) {
   card.setAttribute("aria-label", "Åbn høringssvar: " + item.title);
   card.dataset.index = index;
 
+  var isOpen = DM.state.variant === "open";
+  var likeClass = isOpen ? "horingssvar-card__like-btn" : "horingssvar-card__meta-item";
+  var likeTag = isOpen ? "button" : "span";
+
   card.innerHTML =
     '<h3 class="horingssvar-card__title">' + item.title + '</h3>' +
     '<p class="horingssvar-card__description">' + item.description + '</p>' +
@@ -49,11 +53,22 @@ function createCard(item, index) {
         '<i class="fa-regular fa-comment" aria-hidden="true"></i> ' +
         DM.formatNumber(item.comments) + ' kommentarer' +
       '</span>' +
-      '<span class="horingssvar-card__meta-item">' +
+      '<' + likeTag + ' class="' + likeClass + '" data-item-id="' + item.id + '">' +
         '<i class="fa-regular fa-thumbs-up" aria-hidden="true"></i> ' +
-        DM.formatNumber(item.likes) + ' synes om' +
-      '</span>' +
+        '<span class="horingssvar-card__like-count">' + DM.formatNumber(item.likes) + '</span> synes om' +
+      '</' + likeTag + '>' +
     '</div>';
+
+  if (isOpen) {
+    var likeBtn = card.querySelector(".horingssvar-card__like-btn");
+    likeBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      item.likes++;
+      likeBtn.querySelector(".horingssvar-card__like-count").textContent = DM.formatNumber(item.likes);
+      likeBtn.classList.add("horingssvar-card__like-btn--liked");
+      likeBtn.disabled = true;
+    });
+  }
 
   card.addEventListener("click", function() { DM.openModal(index); });
   card.addEventListener("keydown", function(e) {
